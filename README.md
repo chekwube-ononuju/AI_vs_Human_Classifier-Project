@@ -24,18 +24,32 @@ This project trains a classifier to distinguish between human-written and AI-gen
 
 ## Usage
 
-### 1. Train the model
+### 1. Prepare environment & install dependencies
 ```bash
-python train_model.py --train_path data/AI_vs_huam_train_dataset.xlsx --test_path data/Final_test_data.csv
+python3 -m venv venv        # create venv
+source venv/bin/activate    # activate on macOS
+pip install -r requirements.txt
 ```
-This creates `models/vectorizer.pkl` and `models/model.pkl`, and writes `test_predictions.csv`.
 
-### 2. Run Streamlit app
+### 2. Train the model
+```bash
+python train_model.py \
+  --train_path data/train.csv \
+  --test_path  data/train.csv \
+  --text_col   text \
+  --label_col  generated
+```
+This runs a fast randomized search on a subset, retrains on full data, and saves:
+- `models/vectorizer.pkl`
+- `models/model.pkl`
+- `test_predictions.csv`
+
+### 3. Launch the Streamlit app
 ```bash
 streamlit run app.py
 ```
 
-## Project Structure
+### 4. Project structure
 ```
 .
 ├── .gitignore
@@ -45,6 +59,9 @@ streamlit run app.py
 ├── requirements.txt
 ├── train_model.py
 ├── app.py
+├── data/
+│   └── train.csv
+├── test_predictions.csv
 └── models
     ├── vectorizer.pkl
     └── model.pkl
